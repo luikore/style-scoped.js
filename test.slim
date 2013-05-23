@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+    script src="scoped.js"
+  body
+    div black
+    div
+      style scoped=true
+        | div {color: red;}
+          span {color: green;}
+      | red
+      span green
+    coffee:
+      $ -> $.applyScopedCss()
