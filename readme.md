@@ -11,6 +11,14 @@ rake
 
 ## Use
 
+HTML:
+
+```html
+<script src="scoped.js"></script>
+```
+
+Coffee:
+
 ```coffee
 $ ->
   $.applyScopedCss()
