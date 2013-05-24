@@ -1,6 +1,6 @@
 desc "build"
 task :default do
   system 'slimrb test.slim > test.html'
-  system 'cat scoped.coffee strscan-js/src/strscan.coffee | coffee -scp > scoped.js'
+  system 'cat style-scoped.coffee strscan-js/src/strscan.coffee | coffee -scp > style-scoped.js'
   exec 'open test.html'
 end
