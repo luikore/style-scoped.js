@@ -1,6 +1,7 @@
 desc "build"
 task :default do
   system 'slimrb test.slim > test.html'
-  system 'cat style-scoped.coffee strscan-js/src/strscan.coffee | coffee -scp > style-scoped.js'
+  system 'set -o pipefail; cat style-scoped.coffee strscan-js/src/strscan.coffee | coffee -scp > style-scoped.js'
+  abort 'compile failure' if $? != 0
   exec 'open test.html'
 end
