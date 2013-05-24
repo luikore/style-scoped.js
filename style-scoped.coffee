@@ -1,4 +1,6 @@
 $.applyScopedCss = ->
+  return if 'scoped' in document.createElement('style')
+
   space = /\s*(\/\*.*?\*\/\s*)*/
   parse = (css) ->
     css = new $.applyScopedCss.StringScanner(css)

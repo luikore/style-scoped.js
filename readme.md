@@ -29,3 +29,8 @@ In addition, it watches dom changes for browsers that support `MutationObserver`
 ## Limits
 
 The CSS parser is quite naive, not support `@` instructions or vars yet.
+
+## Todo
+
+- Mutation listener for IE < 9
+- Finer grained observer
