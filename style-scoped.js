@@ -58,7 +58,7 @@
           observer.observe(parent[0], {
             subtree: true,
             childList: false,
-            attributes: false,
+            attributes: true,
             characterData: true
           });
         }

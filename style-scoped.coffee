@@ -34,7 +34,7 @@ $.applyScopedCss = ->
           change parent, e
           undefined
         )
-        observer.observe parent[0], {subtree: true, childList: false, attributes: false, characterData: true}
+        observer.observe parent[0], {subtree: true, childList: false, attributes: true, characterData: true}
       undefined
 
 exports = $.applyScopedCss
