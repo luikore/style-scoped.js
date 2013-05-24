@@ -1,7 +1,75 @@
 (function() {
-  var StringScanner;
+  var StringScanner, exports,
+    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  (typeof exports !== "undefined" && exports !== null ? exports : this).StringScanner = StringScanner = (function() {
+  $.applyScopedCss = function() {
+    var change, observerKlass, parse, space;
+    if (__indexOf.call(document.createElement('style'), 'scoped') >= 0) return;
+    space = /\s*(\/\*.*?\*\/\s*)*/;
+    parse = function(css) {
+      var hash, selector, style;
+      css = new $.applyScopedCss.StringScanner(css);
+      hash = {};
+      while (!css.hasTerminated()) {
+        css.skip(space);
+        selector = $.trim(css.scanUntil(/\{/));
+        selector = selector.slice(0, selector.length - 1);
+        style = css.scanUntil(/\}/);
+        style = style.slice(0, style.length - 1);
+        hash[selector] = style;
+      }
+      return hash;
+    };
+    change = function(parent, e) {
+      var c, selector, style, _ref, _results;
+      _ref = e.data('scoped');
+      _results = [];
+      for (selector in _ref) {
+        style = _ref[selector];
+        _results.push((function() {
+          var _i, _len, _ref2, _results2;
+          _ref2 = parent.find(selector).add(parent.filter(selector));
+          _results2 = [];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            c = _ref2[_i];
+            c = $(c);
+            if (c.attr('style')) style += ';' + c.attr('style');
+            _results2.push(c.attr('style', style));
+          }
+          return _results2;
+        })());
+      }
+      return _results;
+    };
+    observerKlass = window.MutationObserver || window.WebKitMutationObserver;
+    return $('style[scoped]').each(function(i, elem) {
+      var e, observer, parent;
+      e = $(elem);
+      if (!e.data('scoped')) {
+        e.data('scoped', parse(e.text()));
+        parent = e.parent();
+        change(parent, e);
+        e.text('');
+        if (observerKlass) {
+          observer = new observerKlass(function(mutation, observer) {
+            change(parent, e);
+            return;
+          });
+          observer.observe(parent[0], {
+            subtree: true,
+            childList: false,
+            attributes: false,
+            characterData: true
+          });
+        }
+        return;
+      }
+    });
+  };
+
+  exports = $.applyScopedCss;
+
+  (exports != null ? exports : this).StringScanner = StringScanner = (function() {
 
     function StringScanner(source) {
       this.source = source.toString();
